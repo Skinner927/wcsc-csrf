@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST[COMMENT])
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>Picture of the week</title>
-  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
 <?php
@@ -69,7 +69,7 @@ if ($_COOKIE["PHPSESSID"] === BOTCOOKIE) {
     <tr style="vertical-align: top">
       <th rowspan="100" width="600px">
         <h3>Picture of the week:</h3>
-        <img src="./image.jpg"/>
+        <img src="/board/image.jpg" />
       </th>
     </tr>
     <tr width="400">
