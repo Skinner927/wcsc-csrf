@@ -20,5 +20,10 @@
     "chalk": "^1.1.1",
     "jquery": "^1.12.1",
     "zombie": "^4.2.1"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-shell": "^1.2.1"
   }
 }

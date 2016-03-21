@@ -14,6 +14,7 @@ define('USERNAME', 'username');
 
 // Let's enable XSS on this website
 header('X-XSS-Protection: 0');
+header('Access-Control-Allow-Origin: *');
 
 function sanitizeAlphaNum($session)
 {
@@ -47,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST[COMMENT])
   $fh = fopen(COMMENTDIR . $file_name, 'w+');
   fwrite($fh, trim($_POST[USERNAME]) . "\n" . $_POST[COMMENT]);
   fclose($fh);
+  header('HTTP/1.1 303 See Other');
   header('Location: ' . $_SERVER['REQUEST_URI']);
   die('redirecting');
 }
@@ -57,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST[COMMENT])
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>Picture of the week</title>
   <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+  <script>$.support.cors = true;</script>
 </head>
 <body>
 <?php
@@ -69,7 +72,7 @@ if ($_COOKIE["PHPSESSID"] === BOTCOOKIE) {
     <tr style="vertical-align: top">
       <th rowspan="100" width="600px">
         <h3>Picture of the week:</h3>
-        <img src="/board/image.jpg" />
+        <img src="/image.jpg" />
       </th>
     </tr>
     <tr width="400">
@@ -114,7 +117,7 @@ if ($_COOKIE["PHPSESSID"] === BOTCOOKIE) {
       echo "\t<td colspan='2' style='word-wrap: break-word;padding: 5px;'>Submitted by: <b>$content[0]</b></td>\n";
       echo "<tr style='border: 1px dotted black'>\n";
       echo "</tr>\n";
-      echo "\t<td colspan='2' style='border: 1px dotted black;word-wrap: break-word;padding: 5px;'>$body</td>\n";
+      echo "\t<td colspan='2' style='border: 1px dotted black;word-wrap: break-word;padding: 5px; white-space: pre-wrap'>$body</td>\n";
       echo "</tr>\n";
     }
     ?>
